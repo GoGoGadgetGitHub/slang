@@ -1,12 +1,34 @@
-meme_dict = {
-            "CRINGE": "Something exceptionally weird or embarrassing",
-            "LOL": "A common response to something funny ",
-            "ROFL": "ROFL is used as a reaction to something funny, similar to LOL"
-            }
+import discord
+from bot_logic import gen_pass, dice_roll
+from discord.ext import commands
 
-word = input("Type in a modern word you don't understand (use all capital letters!): ")
+# intents variable stores the permissions of the bot
+intents = discord.Intents.default()
 
-if word in meme_dict.keys():
-    print(meme_dict[word])
-else:
-    print("We don't have this word yet... But we're working on it!")
+# Enable the permission to read message content
+intents.message_content = True
+
+# Create a bot and pass the intents
+bot = commands.Bot(command_prefix= "!", intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {client.user}')
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send("Hello!")
+
+@bot.command()
+async def bye(ctx):
+    await ctx.send("\U0001f642")
+
+@bot.command()
+async def password(ctx, length:int):
+    await ctx.send(gen_pass(length))
+
+@bot.command()
+async def dice(ctx):
+    await ctx.send(dice_roll())
+
+bot.run("SECRET TOKEN")
